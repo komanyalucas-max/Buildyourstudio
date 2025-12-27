@@ -3,7 +3,7 @@ import { StudioTypeSelector, StudioType } from './components/StudioTypeSelector'
 import { StudioBuilder } from './components/StudioBuilder';
 import { BackgroundIcons } from './components/BackgroundIcons';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { Home, Info, Mail, LayoutDashboard, Shield } from 'lucide-react';
+import { Home, Info, Mail, LayoutDashboard, Shield, Menu, X } from 'lucide-react';
 import { fetchSettings } from '../utils/api';
 
 type View = 'home' | 'about' | 'contact';
@@ -17,6 +17,7 @@ interface SystemSettings {
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedStudioType, setSelectedStudioType] = useState<StudioType | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [settings, setSettings] = useState<SystemSettings>({
     systemName: 'Studio Builder',
     logoUrl: '',
@@ -110,8 +111,8 @@ export default function App() {
                 <span className="font-bold text-lg">{settings.systemName}</span>
               </button>
 
-              {/* Navigation Items */}
-              <div className="flex items-center gap-6">
+              {/* Desktop Navigation Items */}
+              <div className="hidden md:flex items-center gap-6">
                 <button
                   onClick={() => setCurrentView('home')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${currentView === 'home'
@@ -156,8 +157,73 @@ export default function App() {
                   <span>Admin Panel</span>
                 </a>
               </div>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-800/30 rounded-lg transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu Drawer */}
+          {isMobileMenuOpen && (
+            <div className={`md:hidden absolute top-16 left-0 right-0 ${theme.navBg} backdrop-blur-xl border-b border-slate-700/50 shadow-xl animate-in slide-in-from-top-2 duration-200`}>
+              <div className="px-4 py-4 space-y-2">
+                <button
+                  onClick={() => { setCurrentView('home'); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${currentView === 'home'
+                    ? 'bg-slate-800/50 text-cyan-400'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/30'
+                    }`}
+                >
+                  <Home className="w-5 h-5" />
+                  <span className="font-medium">Home</span>
+                </button>
+
+                <button
+                  onClick={() => { setCurrentView('about'); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${currentView === 'about'
+                    ? 'bg-slate-800/50 text-cyan-400'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/30'
+                    }`}
+                >
+                  <Info className="w-5 h-5" />
+                  <span className="font-medium">About</span>
+                </button>
+
+                <button
+                  onClick={() => { setCurrentView('contact'); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${currentView === 'contact'
+                    ? 'bg-slate-800/50 text-cyan-400'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/30'
+                    }`}
+                >
+                  <Mail className="w-5 h-5" />
+                  <span className="font-medium">Contact</span>
+                </button>
+
+                <div className="pt-2 border-t border-slate-700/50 mt-2">
+                  <a
+                    href={settings.adminUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/50 rounded-lg text-purple-300 hover:from-purple-500/30 hover:to-cyan-500/30 transition-all shadow-lg shadow-purple-900/20"
+                  >
+                    <LayoutDashboard className="w-5 h-5" />
+                    <span className="font-medium">Admin Panel</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* Main Content */}

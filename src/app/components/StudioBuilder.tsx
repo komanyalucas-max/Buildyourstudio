@@ -265,7 +265,7 @@ export function StudioBuilder({ studioType, onBack }: StudioBuilderProps) {
           {computerChoice === 'no' && (
             <div className="space-y-4 animate-in fade-in duration-300">
               <p className="text-slate-300">Choose your computer type:</p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                   onClick={() => handleComputerType('laptop')}
                   className={`p-4 rounded-xl border-2 transition-all ${computerType === 'laptop'
@@ -316,7 +316,7 @@ export function StudioBuilder({ studioType, onBack }: StudioBuilderProps) {
         {/* Tier Selection */}
         <div className="space-y-4">
           <p className="text-slate-300">Select your budget range:</p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {tiers.map((tier) => {
               const tierProducts = catProducts.filter(p => p.tier === tier);
               if (tierProducts.length === 0) return null;
@@ -481,11 +481,12 @@ export function StudioBuilder({ studioType, onBack }: StudioBuilderProps) {
         <div className="fixed bottom-8 right-8 z-50">
           <button
             onClick={() => setShowCart(!showCart)}
-            className={`${theme.button} text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 transition-all hover:scale-105`}
+            className={`${theme.button} text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 transition-all hover:scale-105 active:scale-95`}
           >
             <ShoppingCart className="w-6 h-6" />
-            <span className="font-semibold">{cart.length} Items</span>
-            <span className="ml-2 px-3 py-1 bg-white/20 rounded-full">
+            <span className="font-semibold hidden sm:inline">{cart.length} Items</span>
+            <span className="font-semibold sm:hidden">{cart.length}</span>
+            <span className="ml-2 px-3 py-1 bg-white/20 rounded-full text-sm">
               {formatPrice(getTotalPrice(), getTotalPrice())}
             </span>
           </button>
@@ -493,7 +494,7 @@ export function StudioBuilder({ studioType, onBack }: StudioBuilderProps) {
 
         {/* Cart Sidebar */}
         {showCart && (
-          <div className="fixed inset-y-0 right-0 w-96 bg-slate-900 border-l border-slate-700 shadow-2xl z-50 overflow-y-auto">
+          <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-700 shadow-2xl z-50 overflow-y-auto animate-in slide-in-from-right duration-300">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-slate-200">Your Cart</h2>
@@ -581,11 +582,11 @@ export function StudioBuilder({ studioType, onBack }: StudioBuilderProps) {
                 {/* Category Header */}
                 <button
                   onClick={() => toggleCategory(category.id)}
-                  className="w-full p-6 flex items-center justify-between transition-colors hover:bg-slate-800/70"
+                  className="w-full p-4 sm:p-6 flex items-center justify-between transition-colors hover:bg-slate-800/70"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-xl ${theme.bg}`}>
-                      {Icon && <Icon className={`w-6 h-6 ${theme.text}`} />}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className={`p-2 sm:p-3 rounded-xl ${theme.bg}`}>
+                      {Icon && <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${theme.text}`} />}
                     </div>
                     <div className="text-left">
                       <h3 className="text-xl font-semibold text-slate-200">{category.name}</h3>
